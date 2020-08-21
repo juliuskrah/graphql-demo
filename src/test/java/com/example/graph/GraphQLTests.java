@@ -51,15 +51,13 @@ class GraphQLTests {
 	private final GraphQLTestTemplate template;
 	private final ObjectMapper mapper;
 	@MockBean
-	private AuthorRepository authorRepository;
-	@MockBean
-	private BookRepository bookRepository;
+	private StoreService storeService;
 
 	@BeforeAll
 	void initMocks() {
-		when(authorRepository.findById(anyString())).thenReturn( //
+		when(storeService.findAuthorById(anyString())).thenReturn( //
 				Optional.of(new Author("author-1", "Joanne", "Rowling")));
-		when(bookRepository.findById(anyString())).then(invocation -> {
+		when(storeService.findBookById(anyString())).then(invocation -> {
 			String id = invocation.getArgument(0);
 			return books.stream().filter(book -> id.equals(book.getId())).findFirst();
 		});

@@ -6,18 +6,16 @@ import graphql.schema.DataFetcher;
 
 @Component
 public class GraphQLDataFetchers {
-	private final AuthorRepository authorRepository;
-	private final BookRepository bookRepository;
+	private final StoreService storeService;
 	
-	public GraphQLDataFetchers(BookRepository bookRepository, AuthorRepository authorRepository) {
-		this.authorRepository = authorRepository;
-		this.bookRepository = bookRepository;
+	public GraphQLDataFetchers(StoreService storeService) {
+		this.storeService = storeService;
 	}
 
     public DataFetcher<Book> getBookByIdDataFetcher() {
         return dataFetchingEnvironment -> {
             String bookId = dataFetchingEnvironment.getArgument("id");
-            return bookRepository.findById(bookId)
+            return storeService.findBookById(bookId)
                     .orElse(null);
         };
     }
@@ -26,7 +24,7 @@ public class GraphQLDataFetchers {
         return dataFetchingEnvironment -> {
             Book book = dataFetchingEnvironment.getSource();
             String authorId = book.getAuthorId();
-            return authorRepository.findById(authorId)
+            return storeService.findAuthorById(authorId)
                     .orElse(null);
         };
     }
