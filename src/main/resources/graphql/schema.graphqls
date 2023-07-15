@@ -1,0 +1,18 @@
+type Query {
+  node(id: ID!): Node
+  author(id: ID!): Author
+}
+
+interface Node {
+  id: ID!
+}
+
+type Author implements Node{
+  id: ID!
+  firstName: String
+  lastName: String
+}
+
+schema {
+  query: Query
+}
