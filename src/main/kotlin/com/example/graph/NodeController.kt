@@ -48,26 +48,4 @@ class NodeController(
 
     }
 
-    // This works
-    // @GraphQlExceptionHandler
-    fun handleT(ex: Throwable, env: DataFetchingEnvironment): GraphQLError {
-        log.info("Handling error imperative")
-        return GraphQLError.newError()
-            .errorType(ErrorType.INTERNAL_ERROR)
-            .message(ex.message)
-            .build()
-    }
-
-    // This works as well
-    // @GraphQlExceptionHandler
-    fun handleMono(ex: Throwable, env: DataFetchingEnvironment): Mono<GraphQLError> {
-        log.info("Handling error reactive")
-        return Mono.just(
-            GraphQLError.newError()
-                .errorType(ErrorType.INTERNAL_ERROR)
-                .message(ex.message)
-                .build()
-        )
-    }
-
 }
