@@ -1,0 +1,10 @@
+query productNodesDetails($ids: [ID!]!) {
+    nodes(ids: $ids) {
+        id
+        __typename
+        ... on Product {
+            title
+            description
+        }
+    }
+}

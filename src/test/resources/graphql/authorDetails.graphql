@@ -1,9 +1,0 @@
-query authorDetails($authorId: ID!) {
-    node(id: $authorId) {
-        id
-        ... on Author {
-            firstName
-            lastName
-        }
-    }
-}

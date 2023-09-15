@@ -1,16 +1,18 @@
 type Query {
   node(id: ID!): Node
-  author(id: ID!): Author
+  nodes(ids: [ID!]!): [Node]!
+  product(id: ID!): Product
 }
 
 interface Node {
+  "Global ID"
   id: ID!
 }
 
-type Author implements Node{
+type Product implements Node{
   id: ID!
-  firstName: String
-  lastName: String
+  title: String
+  description: String
 }
 
 schema {

@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
  */
 interface NodeService {
 
-    fun node(id: String): Mono<Node>
+    fun node(id: String): Mono<out Node>
 
-    fun nodes(ids: List<String>): Flux<Node>
+    fun nodes(ids: List<String>): Flux<out Node>
 }

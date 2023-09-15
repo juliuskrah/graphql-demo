@@ -1,14 +1,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.1.2"
-	id("io.spring.dependency-management") version "1.1.0"
+	id("org.springframework.boot") version "3.1.3"
+	id("io.spring.dependency-management") version "1.1.3"
+	id("org.graalvm.buildtools.native") version "0.9.24"
 	id("com.netflix.dgs.codegen") version "5.12.4"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 }
 
-group = "com.example"
+group = "io.graphql.juliuskrah"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -28,6 +29,7 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 }
 
