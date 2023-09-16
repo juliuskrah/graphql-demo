@@ -135,3 +135,42 @@ class ProductService: MessageSourceAware {
     }
 }
 ```
+
+## Take it for a spin
+
+You need Java 17 to run this:
+
+```bash
+./gradlew bootRun
+```
+
+Endpoint: http://localhost:8080
+
+Request:
+
+```graphql
+{
+    node(id: "Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ") {
+        id
+        __typename
+        ... on Product {
+            title
+            description
+        }
+    }
+}
+```
+
+### Building a native binary
+
+You need a [Native Image Kit](https://bell-sw.com/pages/downloads/native-image-kit/#/nik-22-17) v22.3 abd above.
+
+```bash
+./gradlew nativeCompile
+```
+
+The native image executable can be found the `build/native/nativeCompile`
+
+```bash
+./build/native/nativeCompile/graphql-demo
+```

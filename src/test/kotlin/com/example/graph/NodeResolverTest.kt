@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.condition.DisabledInNativeImage
 import org.mockito.Mockito.anyString
 import org.mockito.kotlin.check
 import org.mockito.kotlin.doAnswer
@@ -18,6 +19,7 @@ import reactor.test.StepVerifier
 /**
  * @author Julius Krah
  */
+@DisabledInNativeImage
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NodeResolverTest {
 

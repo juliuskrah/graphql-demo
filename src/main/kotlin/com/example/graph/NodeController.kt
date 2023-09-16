@@ -35,19 +35,19 @@ class NodeController (
 
     @QueryMapping
     suspend fun node(@Argument id: String): Node? {
-        log.log(INFO, "Using node id: {}", id)
+        log.log(INFO, "Using node id: {0}", id)
         return nodeResolver.nodeById(id).awaitSingleOrNull()
     }
 
     @QueryMapping
     suspend fun product(@Argument id: String): Product? {
-        log.log(INFO, "Using product id: {}", id)
+        log.log(INFO, "Using product id: {0}", id)
         return nodeService.product(id).awaitSingleOrNull()
     }
 
     @QueryMapping
     fun nodes(@Argument ids: List<String>): Flow<Node> {
-        log.log(INFO, "Using node ids: {}", ids)
+        log.log(INFO, "Using node ids: {0}", ids)
         return nodeResolver.nodeByIds(ids).asFlow()
     }
 

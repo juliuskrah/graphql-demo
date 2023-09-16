@@ -4,9 +4,9 @@ import com.example.graph.generated.types.Node
 import com.example.graph.generated.types.Product
 import org.assertj.core.api.Assertions.`as`
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.AutoCloseableSoftAssertions
 import org.assertj.core.api.InstanceOfAssertFactories
 import org.assertj.core.api.InstanceOfAssertFactories.type
-import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties
@@ -40,12 +40,11 @@ class NodeControllerTest {
             .execute()
             .path("node").entity(Node::class.java)
             .satisfies { node ->
-                assertSoftly { softly ->
-                    softly.assertThat(node).isNotNull()
-                        .extracting(Node::id, `as`(InstanceOfAssertFactories.STRING)).isBase64()
-                        .isEqualTo("Z2lkOi8vZGVtby9Qcm9kdWN0LzU3MWEyMzc2LTI0YjYtNGIwNS04YzkwLTdkMzhjZDA0MWJmZA==")
-                    softly.assertThat(node).hasFieldOrPropertyWithValue("title", "Kopfhörer")
-                }
+                assertThat(node).isNotNull()
+                    .extracting(Node::id, `as`(InstanceOfAssertFactories.STRING)).isBase64()
+                    .isEqualTo("Z2lkOi8vZGVtby9Qcm9kdWN0LzU3MWEyMzc2LTI0YjYtNGIwNS04YzkwLTdkMzhjZDA0MWJmZA==")
+                assertThat(node).hasFieldOrPropertyWithValue("title", "Kopfhörer")
+
             }
     }
 
@@ -73,18 +72,15 @@ class NodeControllerTest {
                 headers.acceptLanguage = listOf(Locale.LanguageRange("de-DE", 1.0))
             }
         }.build()
-
         localeAwareTester.documentName("productDetails")
             .variable("id", nodeId)
             .execute()
             .path("product").entity(Product::class.java)
             .satisfies { node ->
-                assertSoftly { softly ->
-                    softly.assertThat(node).isNotNull()
-                        .extracting(Product::id, `as`(InstanceOfAssertFactories.STRING)).isBase64()
-                        .isEqualTo("Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ==")
-                    softly.assertThat(node).extracting(Product::title).isEqualTo("Smartphone-Hülle")
-                }
+                assertThat(node).isNotNull()
+                    .extracting(Product::id, `as`(InstanceOfAssertFactories.STRING)).isBase64()
+                    .isEqualTo("Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ==")
+                assertThat(node).extracting(Product::title).isEqualTo("Smartphone-Hülle")
             }
     }
 

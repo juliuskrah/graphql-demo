@@ -31,6 +31,7 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
+	testImplementation("org.springframework:spring-core-test")
 }
 
 tasks.withType<KotlinCompile> {
@@ -48,3 +49,12 @@ tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+//gradlePlugin {
+//	plugins {
+//		create("runtimeHintsAgentPlugin") {
+//			id = "org.springframework.build.runtimehints-agent"
+//			implementationClass = "org.springframework.build.hint.RuntimeHintsAgentPlugin"
+//		}
+//	}
+//}
