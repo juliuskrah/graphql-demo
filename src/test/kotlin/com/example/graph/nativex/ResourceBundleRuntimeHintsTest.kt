@@ -15,8 +15,11 @@ class ResourceBundleRuntimeHintsTest {
         val hints = RuntimeHints()
         ResourceBundleRuntimeHints().registerHints(hints, javaClass.classLoader)
 
-        assertThat(RuntimeHintsPredicates.resource().forBundle("messages/messages")).withFailMessage {
-            "'messages/message' bundle not registered"
+        assertThat(RuntimeHintsPredicates.resource().forResource("messages/messages.properties")).withFailMessage {
+            "'messages/message.properties' resource not registered"
+        }.accepts(hints)
+        assertThat(RuntimeHintsPredicates.resource().forResource("messages/messages_de.properties")).withFailMessage {
+            "'messages/message_de.properties' resource not registered"
         }.accepts(hints)
 
         assertThat(RuntimeHintsPredicates.resource().forBundle("ValidationMessages")).withFailMessage {

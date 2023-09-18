@@ -10,7 +10,7 @@ class ResourceBundleRuntimeHints : RuntimeHintsRegistrar {
 
     override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
         hints.resources().registerResourceBundle("sun.util.resources.LocaleNames")
-            .registerResourceBundle("messages/messages")
             .registerResourceBundle("ValidationMessages")
+            .registerPattern("messages/*")
     }
 }

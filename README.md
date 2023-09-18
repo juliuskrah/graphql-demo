@@ -163,7 +163,7 @@ Request:
 
 ### Building a native binary
 
-You need a [Native Image Kit](https://bell-sw.com/pages/downloads/native-image-kit/#/nik-22-17) v22.3 abd above.
+You need a [Native Image Kit](https://bell-sw.com/pages/downloads/native-image-kit/#/nik-22-17) v22.3 and above.
 
 ```bash
 ./gradlew nativeCompile
