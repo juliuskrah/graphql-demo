@@ -5,3 +5,6 @@ spring:
   messages:
     basename: messages/messages
     encoding: UTF-8
+  docker:
+    compose:
+      file: src/main/resources/compose.yml

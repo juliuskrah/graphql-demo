@@ -2,6 +2,11 @@ type Query {
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
   product(id: ID!): Product
+  products(first: Int, after: String, last: Int, before: String): ProductConnection
+}
+
+type Mutation {
+  addProduct(input: ProductInput!): Product
 }
 
 interface Node {
@@ -13,8 +18,24 @@ type Product implements Node{
   id: ID!
   title: String
   description: String
+  mediaUrl: [URL]
+}
+
+input ProductInput {
+  title: String!
+  description: String
+  mediaUrl: [URL]
 }
 
 schema {
   query: Query
+  mutation: Mutation
 }
+
+"""
+An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string.
+"""
+scalar URL
+  @specifiedBy(url:
+    "https://www.w3.org/Addressing/URL/url-spec.txt"
+  )

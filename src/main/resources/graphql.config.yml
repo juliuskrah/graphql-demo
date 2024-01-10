@@ -1,0 +1,7 @@
+# IntelliI Config file
+schema: local.graphql
+documents: '**/*.graphql'
+extensions:
+  endpoints:
+    Local:
+      url: http://localhost:8080/graphql

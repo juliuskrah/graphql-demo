@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalEncodingApi::class)
 
-package com.example.graph
+package com.example.graph.extensions
 
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi

@@ -1,0 +1,9 @@
+query products($first: Int, $last: Int) {
+    products(first: $first, last: $last) {
+        edges {
+            node {
+                id
+            }
+        }
+    }
+}

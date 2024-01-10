@@ -1,0 +1,9 @@
+query nodeById($nodeId: ID!) {
+    node(id: $nodeId) {
+        id
+        ... on Product {
+            title
+            description
+        }
+    }
+}

@@ -1,5 +1,8 @@
 package com.example.graph
 
+import com.example.graph.extensions.fromBase64
+import com.example.graph.extensions.toBase64
+
 /**
  * @author Julius Krah
  */
@@ -11,6 +14,29 @@ data class GlobalId(val node: String, val id: String) {
      */
     fun toBase64(): String {
         return toGid().toBase64()
+    }
+
+    /**
+     * Ensure the node given by the client matches the node for the current field.
+     * This will prevent a gid `gid://demo/Order/123456789` of an Order node from
+     * matching a gid `gid://demo/Product/123456789` of a Product.
+     *
+     * Given
+     * ```
+     * query {
+     *   product(id: "gid://demo/Order/123456789") {
+     *    ...
+     *   }
+     * }
+     * ```
+     *
+     * Then <br/>
+     * we query the Product database with ID `123456788` which may return a result, however we used a GID
+     * for `Order`
+     */
+    fun ensureNode(node: String): GlobalId {
+        return if (this.node != node) throw IllegalArgumentException("Invalid node `${this.node}` expected `$node`")
+        else this
     }
 
     override fun toString(): String {

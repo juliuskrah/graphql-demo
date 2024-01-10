@@ -1,0 +1,8 @@
+mutation addProduct($title: String!, $description: String, $mediaUrl: [URL]) {
+    addProduct(input: {title: $title, description: $description, mediaUrl: $mediaUrl}) {
+        id
+        title
+        description
+        mediaUrl
+    }
+}

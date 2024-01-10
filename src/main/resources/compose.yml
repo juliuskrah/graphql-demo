@@ -1,0 +1,17 @@
+name: "graphql-test"
+
+services:
+  mongodb:
+    hostname: mongodb
+    image: mongo:7.0.5-jammy
+    restart: always
+    ports:
+      - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: testuser
+      MONGO_INITDB_ROOT_PASSWORD: testpassword
+      MONGO_INITDB_DATABASE: testDB
+    volumes:
+      - testMongoData:/data/db
+volumes:
+  testMongoData: {}
