@@ -1,4 +1,4 @@
-package com.example.graph
+package com.example.graph.support
 
 /**
  * @author Julius Krah

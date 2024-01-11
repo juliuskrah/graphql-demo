@@ -1,6 +1,7 @@
 package com.example.graph
 
 import com.example.graph.generated.DgsConstants
+import com.example.graph.support.GlobalId
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

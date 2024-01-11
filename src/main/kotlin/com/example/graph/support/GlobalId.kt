@@ -1,4 +1,4 @@
-package com.example.graph
+package com.example.graph.support
 
 import com.example.graph.extensions.fromBase64
 import com.example.graph.extensions.toBase64

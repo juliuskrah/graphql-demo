@@ -8,7 +8,7 @@ import java.util.UUID
 /**
  * @author Julius Krah
  */
-@Document(collation = "products")
+@Document(collection = "products")
 data class ProductEntity(
     @Id val id: String? = null,
     val title: String? = null,

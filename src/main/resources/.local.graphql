@@ -1,0 +1,58 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"Indicates an Input Object is a OneOf Input Object."
+directive @oneOf on INPUT_OBJECT
+
+interface Node {
+    "Global ID"
+    id: ID!
+}
+
+type Mutation {
+    addProduct(input: ProductInput!): Product
+}
+
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type Product implements Node {
+    description: String
+    id: ID!
+    mediaUrl: [URL]
+    title: String
+}
+
+type ProductConnection {
+    edges: [ProductEdge]!
+    pageInfo: PageInfo!
+}
+
+type ProductEdge {
+    cursor: String!
+    node: Product!
+}
+
+type Query {
+    node(id: ID!): Node
+    nodes(ids: [ID!]!): [Node]!
+    product(id: ID!): Product
+    products(after: String, before: String, first: Int, last: Int): ProductConnection
+}
+
+"An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string."
+scalar URL
+
+input ProductInput {
+    description: String
+    mediaUrl: [URL]
+    title: String!
+}

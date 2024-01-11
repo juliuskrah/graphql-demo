@@ -1,9 +1,19 @@
-query products($first: Int, $last: Int) {
-    products(first: $first, last: $last) {
+query products($first: Int, $after: String, $last: Int, $before: String) {
+    products(first: $first, after: $after, last: $last, before: $before) {
         edges {
             node {
                 id
+                title
+                description
+                mediaUrl
             }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
         }
     }
 }

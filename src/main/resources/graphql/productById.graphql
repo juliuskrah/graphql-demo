@@ -3,5 +3,6 @@ query productById($productId: ID!) {
         id
         title
         description
+        mediaUrl
     }
 }

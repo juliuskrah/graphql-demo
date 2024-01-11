@@ -4,6 +4,7 @@ query nodeById($nodeId: ID!) {
         ... on Product {
             title
             description
+            mediaUrl
         }
     }
 }

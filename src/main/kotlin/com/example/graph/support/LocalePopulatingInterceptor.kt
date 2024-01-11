@@ -1,4 +1,4 @@
-package com.example.graph
+package com.example.graph.support
 
 import org.springframework.graphql.server.WebGraphQlInterceptor
 import org.springframework.graphql.server.WebGraphQlRequest
