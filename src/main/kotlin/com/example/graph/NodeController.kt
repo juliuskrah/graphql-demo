@@ -67,7 +67,7 @@ class NodeController (
 
     @QueryMapping
     suspend fun products(subrange: ScrollSubrange): Window<Product> {
-        val scroll = subrange.position().orElse(ScrollPosition.offset())
+        val scroll = subrange.position().orElse(ScrollPosition.keyset())
         val count = subrange.count().orElse(20)
         log.log(INFO, "Using forward={0} and count={1} with position={2}",
             subrange.forward(), count, scroll)

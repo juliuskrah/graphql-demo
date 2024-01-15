@@ -8,3 +8,12 @@ spring:
   docker:
     compose:
       file: src/main/resources/compose.yml
+  data:
+    mongodb:
+      database: test
+
+mongock:
+  enabled: true
+  migration-scan-package: com.example.graph.migration
+  runner-type: applicationrunner
+  transaction-enabled: true

@@ -174,3 +174,9 @@ The native image executable can be found the `build/native/nativeCompile`
 ```bash
 ./build/native/nativeCompile/graphql-demo
 ```
+
+TODO
+
+- File upload
+- Authentication
+- Paging with keyset

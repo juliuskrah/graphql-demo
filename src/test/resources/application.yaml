@@ -1,0 +1,4 @@
+mongock:
+  migration-scan-package: com.example.graph.migration
+  runner-type: applicationrunner
+  transactionEnabled: true

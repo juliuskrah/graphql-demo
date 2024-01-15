@@ -25,10 +25,12 @@ type PageInfo {
 }
 
 type Product implements Node {
+    createdAt: DateTime
     description: String
     id: ID!
     mediaUrl: [URL]
-    title: String
+    title: String!
+    updatedAt: DateTime
 }
 
 type ProductConnection {
@@ -47,6 +49,9 @@ type Query {
     product(id: ID!): Product
     products(after: String, before: String, first: Int, last: Int): ProductConnection
 }
+
+"An RFC-3339 compliant DateTime Scalar"
+scalar DateTime
 
 "An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string."
 scalar URL

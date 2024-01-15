@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Apple Juice",
+    "createdAt": 1705348263,
+    "updatedAt": 1705348263,
+    "createdBy": "initialization",
+    "updatedBy": "initialization",
+    "mediaUrls": [
+      "https://learn.saleor.cloud/media/thumbnails/products/saleor-apple-drink_thumbnail_4096.png"
+    ]
+  },
+  {
+    "title": "Monospace Tee",
+    "createdAt": 1705348300,
+    "updatedAt": 1705348300,
+    "createdBy": "initialization",
+    "updatedBy": "initialization",
+    "mediaUrls": [
+      "https://learn.saleor.cloud/media/thumbnails/products/saleor-ascii-shirt-front_thumbnail_4096.png",
+      "https://learn.saleor.cloud/thumbnail/UHJvZHVjdE1lZGlhOjE4/4096/"
+    ]
+  },
+  {
+    "title": "Paul's Balance 420",
+    "createdAt": 1705348316,
+    "updatedAt": 1705348316,
+    "createdBy": "initialization",
+    "updatedBy": "initialization",
+    "mediaUrls": [
+      "https://learn.saleor.cloud/media/thumbnails/products/saleor-pauls-blanace-420-1_thumbnail_4096.png",
+      "https://learn.saleor.cloud/thumbnail/UHJvZHVjdE1lZGlhOjEz/4096/"
+    ]
+  }
+]

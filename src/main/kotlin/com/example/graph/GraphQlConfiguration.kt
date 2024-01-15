@@ -2,6 +2,7 @@ package com.example.graph
 
 import graphql.Scalars
 import graphql.scalars.ExtendedScalars
+import graphql.scalars.ExtendedScalars.DateTime
 import graphql.schema.idl.RuntimeWiring
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,5 +20,6 @@ class GraphQlConfiguration {
                 ExtendedScalars.newAliasedScalar("URL")
                 .aliasedScalar(ExtendedScalars.Url)
                 .build())
+            .scalar(DateTime)
     }
 }

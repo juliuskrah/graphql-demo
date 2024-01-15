@@ -13,5 +13,12 @@ services:
       MONGO_INITDB_DATABASE: testDB
     volumes:
       - testMongoData:/data/db
+      - ./docker/keyfile:/docker-entrypoint-initdb.d/keyfile
+    healthcheck:
+      test: |
+        test $$(mongosh --quiet -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --eval "try { rs.initiate().ok } catch (_) { rs.status().ok }") -eq 1
+      interval: 10s
+      start_period: 30s
+    command: [ "--replSet", "rs0", "--keyFile", "/docker-entrypoint-initdb.d/keyfile" ]
 volumes:
   testMongoData: {}

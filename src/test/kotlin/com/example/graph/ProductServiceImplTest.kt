@@ -1,10 +1,12 @@
 package com.example.graph
 
+import com.example.graph.repository.Products
 import com.example.graph.support.ProductNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.mockito.kotlin.mock
 import org.springframework.context.support.ResourceBundleMessageSource
 import reactor.test.StepVerifier
 import reactor.util.context.Context
@@ -19,7 +21,8 @@ class ProductServiceImplTest {
 
     @BeforeAll
     fun init() {
-        productService = ProductServiceImpl()
+        val productRepository = mock<Products>()
+        productService = ProductServiceImpl(productRepository)
         val messageSource = ResourceBundleMessageSource()
         messageSource.setBasenames("messages/messages")
         productService.setMessageSource(messageSource)

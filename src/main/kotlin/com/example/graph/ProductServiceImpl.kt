@@ -33,7 +33,7 @@ class ProductServiceImpl(private val productRepository: Products)
     private fun mapWithGlobalId(product: Product, locale: Locale): Product {
         log.log(INFO, "Product id: {0}", product.id)
         return product.copy(id = product.id, title =
-            messageSource.getMessage(product.title!!, null, locale))
+            messageSource.getMessage(product.title, null, locale))
     }
 
     override fun setMessageSource(messageSource: MessageSource) {

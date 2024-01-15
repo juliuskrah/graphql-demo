@@ -11,6 +11,7 @@ plugins {
 
 group = "io.graphql.juliuskrah"
 version = "0.0.1-SNAPSHOT"
+var mongockVersion = "5.4.0"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
@@ -27,14 +28,20 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.graphql-java:graphql-java-extended-scalars:19.0")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	implementation("io.mongock:mongodb-reactive-driver:$mongockVersion")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	compileOnly("io.mongock:mongock-springboot:$mongockVersion")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-testcontainers")
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:mongodb")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 	testImplementation("org.springframework:spring-core-test")
+	testImplementation("io.mongock:mongock-springboot:$mongockVersion")
 }
 
 tasks.withType<KotlinCompile> {

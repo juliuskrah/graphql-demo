@@ -16,9 +16,12 @@ interface Node {
 
 type Product implements Node{
   id: ID!
-  title: String
+  title: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   description: String
   mediaUrl: [URL]
+  # Do not expose createdBy and updatedBy
 }
 
 input ProductInput {
@@ -39,3 +42,9 @@ scalar URL
   @specifiedBy(url:
     "https://www.w3.org/Addressing/URL/url-spec.txt"
   )
+
+"Represents a date with time(zone)."
+scalar DateTime
+  @specifiedBy(url:
+    "https://scalars.graphql.org/andimarek/date-time.html"
+)
