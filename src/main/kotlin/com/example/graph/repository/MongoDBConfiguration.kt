@@ -6,7 +6,6 @@ import io.mongock.runner.springboot.EnableMongock
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.domain.AuditorAware
 import org.springframework.data.domain.ReactiveAuditorAware
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing
 import reactor.core.publisher.Mono
@@ -34,7 +33,7 @@ class MongoDBConfiguration {
     @Bean
     fun auditor(): ReactiveAuditorAware<String> {
         return ReactiveAuditorAware {
-            Mono.just("system")
+            Mono.just("system-job")
         }
     }
 }

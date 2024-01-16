@@ -16,7 +16,7 @@ import java.util.Locale
  * @author Julius Krah
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ProductServiceImplTest {
+class ProductServiceTest {
     private lateinit var productService: ProductServiceImpl
 
     @BeforeAll

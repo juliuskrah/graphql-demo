@@ -2,7 +2,6 @@ package com.example.graph
 
 import com.example.graph.generated.DgsConstants
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -15,6 +14,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import java.time.Duration
 
 /**
  * @author Julius Krah
@@ -46,11 +46,12 @@ class NodeResolverTest {
     fun `should fetch node by id`() {
         // gid://demo/Product/f5c1287c-0bc5-4b05-8af4-5fe7d3cbc99e
         val id = "Z2lkOi8vZGVtby9Qcm9kdWN0L2Y1YzEyODdjLTBiYzUtNGIwNS04YWY0LTVmZTdkM2NiYzk5ZQ"
+        val decodedId = "f5c1287c-0bc5-4b05-8af4-5fe7d3cbc99e"
         val node = nodeResolver.nodeById(id)
 
         StepVerifier.create(node).verifyComplete()
         verify(productService).node(check {
-            assertThat(it).isEqualTo(id)
+            assertThat(it).isEqualTo(decodedId)
         })
     }
 
@@ -59,9 +60,10 @@ class NodeResolverTest {
         // gid://demo/Order/f5c1287c-0bc5-4b05-8af4-5fe7d3cbc99e
         val id = "Z2lkOi8vZGVtby9PcmRlci9mNWMxMjg3Yy0wYmM1LTRiMDUtOGFmNC01ZmU3ZDNjYmM5OWU"
 
-        assertThatThrownBy {
-            nodeResolver.nodeById(id)
-        }.isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("exception.node.resolver.missing-implementation")
+        nodeResolver.nodeById(id).`as`(StepVerifier::create)
+            .expectErrorSatisfies { throwable ->
+                assertThat(throwable).isInstanceOf(IllegalArgumentException::class.java)
+                    .hasMessage("exception.node.resolver.missing-implementation")
+            }.verify(Duration.ofSeconds(1))
     }
 }

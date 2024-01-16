@@ -13,7 +13,8 @@ import reactor.core.publisher.Mono
 class NodeResolver(val nodeServices: Map<String, NodeService>) {
     fun nodeById(id: String): Mono<out Node> {
         val (node, actualId) = GlobalId.from(id)
-        val nodeService = nodeServices[node] ?: throw IllegalArgumentException("exception.node.resolver.missing-implementation")
+        val nodeService = nodeServices[node] ?:
+            return Mono.error(IllegalArgumentException("exception.node.resolver.missing-implementation"))
         return nodeService.node(actualId)
     }
 

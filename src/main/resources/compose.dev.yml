@@ -1,0 +1,6 @@
+name: "graphql-test"
+
+services:
+  mongodb:
+    ports:
+      - 27017:27017

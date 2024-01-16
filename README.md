@@ -6,9 +6,10 @@ This repository contains a sample project for `GraphQL` using `Spring Boot`.
 
 ```graphql
 type Query {
-  node(id: ID!): Node
-  nodes(ids: [ID!]!): [Node]!
-  product(id: ID!): Product
+    node(id: ID!): Node
+    nodes(ids: [ID!]!): [Node]!
+    product(id: ID!): Product
+    products(first: Int, after: String, last: Int, before: String): ProductConnection
 }
 
 interface Node {
@@ -16,15 +17,32 @@ interface Node {
   id: ID!
 }
 
-type Product implements Node{
-  id: ID!
-  title: String
-  description: String
+type Mutation {
+    addProduct(input: ProductInput!): Product
+}
+
+type Product implements Node {
+    id: ID!
+    title: String
+    description: String
+    createdAt: DateTime
+    updatedAt: DateTime
+    mediaUrl: [URL]
+}
+
+input ProductInput {
+    title: String!
+    description: String
+    mediaUrl: [URL]
 }
 
 schema {
-  query: Query
+    query: Query
+    mutation: Mutation
 }
+
+scalar URL
+scalar DateTime
 ```
 
 ## Global ID
@@ -89,7 +107,7 @@ following request for example:
 curl --location 'http://localhost:8080/graphql' \
 --header 'Accept-Language: de-DE' \
 --header 'Content-Type: application/json' \
---data '{"query":"query productNodeDetails($id: ID!) {\n    node(id: $id) {\n        id\n        __typename\n        ... on Product {\n            title\n            description\n        }\n    }\n}\n","variables":{"id":"Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ"}}'
+--data '{"query":"query productNodeDetails($id: ID!) {\n node(id: $id) {\n id\n __typename\n ... on Product {\n title\n description\n }\n }\n}\n","variables":{"id":"Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ"}}'
 ```
 
 The language is set to German using `--header 'Accept-Language: de-DE'`.
@@ -108,7 +126,7 @@ class LocalePopulatingInterceptor: WebGraphQlInterceptor {
 }
 ```
 
-We receive this in the `ProductService`:
+We retrieve this in the `ProductService`:
 
 ```kotlin
 @Service(DgsConstants.PRODUCT.TYPE_NAME)
@@ -138,7 +156,7 @@ class ProductService: MessageSourceAware {
 
 ## Take it for a spin
 
-You need Java 17 to run this:
+You need Java 21 to run this demo:
 
 ```bash
 ./gradlew bootRun
@@ -149,13 +167,16 @@ Endpoint: http://localhost:8080
 Request:
 
 ```graphql
-{
-    node(id: "Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ") {
+query node($nodeId: ID!) {
+    node(id: $nodeId) {
         id
         __typename
         ... on Product {
             title
             description
+            createdAt
+            updatedAt
+            mediaUrl
         }
     }
 }
@@ -175,8 +196,22 @@ The native image executable can be found the `build/native/nativeCompile`
 ./build/native/nativeCompile/graphql-demo
 ```
 
+
+## Docker Compose
+
+Ignore this step if you just want to try out the demo via the graphQl API (the docker compose services are started
+automatically with Spring Boot).
+
+Start the docker compose services when you want to play with the database:
+
+```bash
+docker compose -f src/main/resources/compose.yml -f src/main/resources/compose.dev.yml up -d
+```
+
 TODO
 
-- File upload
-- Authentication
-- Paging with keyset
+- [ ] File upload
+- [ ] Authentication
+- [ ] Paging with keyset
+- [ ] Fix tests
+- [x] Database migration
