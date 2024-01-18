@@ -50,11 +50,8 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-//gradlePlugin {
-//	plugins {
-//		create("runtimeHintsAgentPlugin") {
-//			id = "org.springframework.build.runtimehints-agent"
-//			implementationClass = "org.springframework.build.hint.RuntimeHintsAgentPlugin"
-//		}
-//	}
-//}
+graalvmNative {
+	binaries.all {
+		buildArgs.add("-H:IncludeLocales=de,en")
+	}
+}
