@@ -2,3 +2,9 @@ mongock:
   migration-scan-package: com.example.graph.migration
   runner-type: applicationrunner
   transactionEnabled: true
+spring:
+  messages:
+    basename: messages/messages
+  data:
+    mongodb:
+      database: initDB

@@ -1,16 +1,18 @@
 package com.example.graph
 
+import com.example.graph.repository.ProductEntity
 import com.example.graph.repository.Products
 import com.example.graph.support.ProductNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
-import org.springframework.context.support.ResourceBundleMessageSource
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import reactor.util.context.Context
-import java.util.Locale
+import java.time.Instant.now
 
 /**
  * @author Julius Krah
@@ -21,42 +23,50 @@ class ProductServiceTest {
 
     @BeforeAll
     fun init() {
-        val productRepository = mock<Products>()
+        val productRepository = mock<Products> {
+            on { findById(anyString()) } doAnswer {
+                when(it.getArgument(0, String::class.java)) {
+                    "57774358-36c4-41f0-8c0e-4260ed80b19" -> Mono.empty()
+                    else -> Mono.just(ProductEntity(
+                        id = "71e89777-24fb-4090-8a27-14756dd69b7",
+                        title = "Phone Case",
+                        createdAt = now(),
+                        updatedAt = now()
+                    ))
+                }
+            }
+        }
         productService = ProductServiceImpl(productRepository)
-        val messageSource = ResourceBundleMessageSource()
-        messageSource.setBasenames("messages/messages")
-        productService.setMessageSource(messageSource)
     }
 
     @Test
     fun `should fetch product`() {
-        val id = "Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ"
-        val product = productService.product(id).contextWrite(Context.of(Locale::class, Locale.ENGLISH))
+        val id = "71e89777-24fb-4090-8a27-14756dd69b7"
+        val product = productService.product(id)
 
         StepVerifier.create(product)
             .consumeNextWith {
                 assertThat(it).isNotNull()
-                    .hasFieldOrPropertyWithValue("id", "Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ==")
+                    .hasFieldOrPropertyWithValue("id", "71e89777-24fb-4090-8a27-14756dd69b7")
                     .hasFieldOrPropertyWithValue("title", "Phone Case")
             }.expectComplete().verify()
     }
 
     @Test
     fun `should fetch node`() {
-        val product = productService.node("Z2lkOi8vZGVtby9Qcm9kdWN0LzcxMDA2YWZlLTFkMDctNDYwYi1hN2M3LWRhNGNkNzkwNWZlMA")
-            .contextWrite(Context.of(Locale::class, Locale.GERMAN))
+        val product = productService.node("71e89777-24fb-4090-8a27-14756dd69b7")
 
         StepVerifier.create(product)
             .consumeNextWith {
                 assertThat(it).isNotNull()
-                    .hasFieldOrPropertyWithValue("id", "Z2lkOi8vZGVtby9Qcm9kdWN0LzcxMDA2YWZlLTFkMDctNDYwYi1hN2M3LWRhNGNkNzkwNWZlMA==")
-                    .hasFieldOrPropertyWithValue("title", "Taschenrechner")
+                    .hasFieldOrPropertyWithValue("id", "71e89777-24fb-4090-8a27-14756dd69b7")
+                    .hasFieldOrPropertyWithValue("title", "Phone Case")
             }.expectComplete().verify()
     }
 
     @Test
     fun `should fail product`() {
-        val product = productService.product("Z2lkOi8vZGVtby9Qcm9kdWN0LzU3Nzc0MzU4LTM2YzQtNDFmMC04YzBlLTQyNjBlZDgwYjE5ZA==")
+        val product = productService.product("57774358-36c4-41f0-8c0e-4260ed80b19")
 
         StepVerifier.create(product)
             .consumeErrorWith {

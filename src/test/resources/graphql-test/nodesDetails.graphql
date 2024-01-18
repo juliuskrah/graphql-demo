@@ -5,6 +5,8 @@ query productNodesDetails($ids: [ID!]!) {
         ... on Product {
             title
             description
+            createdAt
+            updatedAt
         }
     }
 }

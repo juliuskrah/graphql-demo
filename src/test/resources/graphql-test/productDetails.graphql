@@ -3,5 +3,7 @@ query productDetails($id: ID!) {
         id
         title
         description
+        createdAt
+        updatedAt
     }
 }

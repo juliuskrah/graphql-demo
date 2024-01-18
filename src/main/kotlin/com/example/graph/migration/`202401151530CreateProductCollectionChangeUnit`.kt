@@ -116,8 +116,8 @@ class `202401151530CreateProductCollectionChangeUnit`(
         val jsonProducts = readFile("data/products.json")
         log.log(INFO, "log.migration.json.data", jsonProducts)
         val products = jsonProducts.map{
-            it["createdAt"] = Instant.ofEpochMilli((it["createdAt"] as Int).toLong())
-            it["updatedAt"] = Instant.ofEpochMilli((it["updatedAt"] as Int).toLong())
+            it["createdAt"] = Instant.ofEpochSecond((it["createdAt"] as Int).toLong())
+            it["updatedAt"] = Instant.ofEpochSecond((it["updatedAt"] as Int).toLong())
             it
         }.map(::Document)
         val subscriber = MongoSubscriberSync<InsertManyResult>()

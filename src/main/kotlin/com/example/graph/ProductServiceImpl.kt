@@ -8,37 +8,22 @@ import com.example.graph.generated.types.ProductInput
 import com.example.graph.repository.ProductEntity
 import com.example.graph.repository.Products
 import com.example.graph.support.ProductNotFoundException
-import org.springframework.context.MessageSource
-import org.springframework.context.MessageSourceAware
 import org.springframework.data.domain.Example
 import org.springframework.data.domain.ScrollPosition
+import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Sort.Order.desc
 import org.springframework.data.domain.Window
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.lang.System.Logger.Level.INFO
-import java.util.Locale
 
 /**
  * @author Julius Krah
  */
 @Transactional
 @Service(DgsConstants.PRODUCT.TYPE_NAME)
-class ProductServiceImpl(private val productRepository: Products)
-    : ProductService, MessageSourceAware {
-    private val log: System.Logger = System.getLogger(ProductServiceImpl::class.java.canonicalName)
-    private lateinit var messageSource: MessageSource
-
-    private fun mapWithGlobalId(product: Product, locale: Locale): Product {
-        log.log(INFO, "Product id: {0}", product.id)
-        return product.copy(id = product.id, title =
-            messageSource.getMessage(product.title, null, locale))
-    }
-
-    override fun setMessageSource(messageSource: MessageSource) {
-        this.messageSource = messageSource
-    }
+class ProductServiceImpl(private val productRepository: Products) : ProductService {
 
     @Transactional(readOnly = true)
     override fun product(id: String): Mono<Product> {
@@ -53,7 +38,8 @@ class ProductServiceImpl(private val productRepository: Products)
 
     override fun products(count: Int, scroll: ScrollPosition): Mono<Window<Product>> {
         return this.productRepository.findBy(Example.of(ProductEntity())) { query ->
-            query.`as`(Product::class.java).limit(count).scroll(scroll)
+            query.sortBy(Sort.by(desc("id"), desc("updatedAt")))
+                .limit(count).`as`(Product::class.java).scroll(scroll)
         }
     }
 

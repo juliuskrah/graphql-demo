@@ -59,4 +59,5 @@ tasks.generateJava {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	jvmArgs("-Dspring.test.aot.processing.failOnError=false")
 }
