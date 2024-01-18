@@ -31,7 +31,7 @@ dependencies {
 	implementation("io.mongock:mongodb-reactive-driver:$mongockVersion")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-	compileOnly("io.mongock:mongock-springboot:$mongockVersion")
+	implementation("io.mongock:mongock-springboot:$mongockVersion")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
@@ -41,7 +41,6 @@ dependencies {
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 	testImplementation("org.springframework:spring-core-test")
-	testImplementation("io.mongock:mongock-springboot:$mongockVersion")
 }
 
 tasks.withType<KotlinCompile> {
@@ -60,4 +59,10 @@ tasks.generateJava {
 tasks.withType<Test> {
 	useJUnitPlatform()
 	jvmArgs("-Dspring.test.aot.processing.failOnError=false")
+}
+
+graalvmNative {
+	binaries.all {
+		buildArgs.add("-H:IncludeLocales=de,en") // see https://www.graalvm.org/latest/reference-manual/native-image/dynamic-features/Resources/#locales
+	}
 }
