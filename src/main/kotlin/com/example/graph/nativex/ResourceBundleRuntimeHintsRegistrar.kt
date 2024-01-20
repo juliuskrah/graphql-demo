@@ -6,11 +6,11 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar
 /**
  * @author Julius Krah
  */
-class ResourceBundleRuntimeHints : RuntimeHintsRegistrar {
+class ResourceBundleRuntimeHintsRegistrar : RuntimeHintsRegistrar {
 
     override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
         hints.resources().registerResourceBundle("sun.util.resources.LocaleNames")
             .registerResourceBundle("ValidationMessages")
-            .registerPattern("messages/*")
+            .registerResourceBundle("messages/messages")
     }
 }

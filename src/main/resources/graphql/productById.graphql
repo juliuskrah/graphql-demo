@@ -4,5 +4,7 @@ query productById($productId: ID!) {
         title
         description
         mediaUrl
+        createdAt
+        updatedAt
     }
 }

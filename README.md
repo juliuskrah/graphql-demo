@@ -4,6 +4,8 @@ This repository contains a sample project for `GraphQL` using `Spring Boot`.
 
 ## Schema
 
+The schema for this example.
+
 ```graphql
 type Query {
     node(id: ID!): Node
@@ -45,7 +47,7 @@ scalar URL
 scalar DateTime
 ```
 
-## Global ID
+## Using Global ID
 
 The Global Identifier for `Node` types are represented as `gid://demo/{node}/{id}` when decoded from base64.
 
@@ -98,62 +100,6 @@ data class GlobalId(val node: String, val id: String) {
 
 ```
 
-## Localization
-
-Localization is implemented by relying on the `Accept-Language` header of the HTTP request. Take the
-following request for example:
-
-```bash
-curl --location 'http://localhost:8080/graphql' \
---header 'Accept-Language: de-DE' \
---header 'Content-Type: application/json' \
---data '{"query":"query productNodeDetails($id: ID!) {\n node(id: $id) {\n id\n __typename\n ... on Product {\n title\n description\n }\n }\n}\n","variables":{"id":"Z2lkOi8vZGVtby9Qcm9kdWN0LzcxZTg5Nzc3LTI0ZmItNDA5MC04YTI3LTE0NzU2ZGQ2OWI3MQ"}}'
-```
-
-The language is set to German using `--header 'Accept-Language: de-DE'`.
-
-This is achieved by setting the `locale` via a `org.springframework.graphql.server.WebGraphQlInterceptor`:
-
-```kotlin
-@Service
-class LocalePopulatingInterceptor: WebGraphQlInterceptor {
-    override fun intercept(request: WebGraphQlRequest, chain: WebGraphQlInterceptor.Chain): Mono<WebGraphQlResponse> {
-        val map = mapOf<Any, Any>(
-            Locale::class to request.locale
-        )
-        return chain.next(request).contextWrite{ ctx -> ctx.putAllMap(map) }
-    }
-}
-```
-
-We retrieve this in the `ProductService`:
-
-```kotlin
-@Service(DgsConstants.PRODUCT.TYPE_NAME)
-class ProductService: MessageSourceAware {
-    
-    private lateinit var messageSource: MessageSource
-    
-    override fun setMessageSource(messageSource: MessageSource) {
-        this.messageSource = messageSource
-    }
-
-    private fun translate(product: Product, locale: Locale): Product {
-        val translated = messageSource.getMessage(product.title!!, null, locale)
-        // ...
-    }
-
-    fun product(id: String): Mono<Product> {
-        return Mono.deferContextual { contextView ->
-            val locale: Locale = contextView.getOrDefault(Locale::class, Locale.getDefault())!!
-            val product: Product = ...
-            translate(product, locale)
-            // ...
-        }
-    }
-}
-```
-
 ## Take it for a spin
 
 You need Java 21 to run this demo:
@@ -164,20 +110,34 @@ You need Java 21 to run this demo:
 
 Endpoint: http://localhost:8080
 
-Request:
+Create a Product:
 
 ```graphql
-query node($nodeId: ID!) {
-    node(id: $nodeId) {
+mutation addProduct($title: String!, $description: String, $mediaUrl: [URL]) {
+    addProduct(input: {title: $title, description: $description, mediaUrl: $mediaUrl}) {
         id
-        __typename
-        ... on Product {
-            title
-            description
-            createdAt
-            updatedAt
-            mediaUrl
-        }
+        title
+        description
+        mediaUrl
+        createdAt
+        updatedAt
+    }
+}
+```
+
+Grab the `id` in the response for the next request.
+
+Find a product by its global `id`:
+
+```graphql
+query productById($productId: ID!) {
+    product(id: $productId) {
+        id
+        title
+        description
+        mediaUrl
+        createdAt
+        updatedAt
     }
 }
 ```
@@ -213,5 +173,5 @@ TODO
 - [ ] File upload
 - [ ] Authentication
 - [ ] Paging with keyset
-- [ ] Fix tests
+- [x] Fix tests
 - [x] Database migration

@@ -1,4 +1,7 @@
 spring:
+  threads:
+    virtual:
+      enabled: true
   graphql:
     graphiql:
       enabled: true
@@ -14,6 +17,6 @@ spring:
 
 mongock:
   enabled: true
-  migration-scan-package: com.example.graph.migration
+#  migration-scan-package: com.example.graph.migration
   runner-type: applicationrunner
   transaction-enabled: true

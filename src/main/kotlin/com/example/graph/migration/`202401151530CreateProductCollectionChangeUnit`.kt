@@ -17,6 +17,7 @@ import io.mongock.api.annotations.RollbackExecution
 import io.mongock.driver.mongodb.reactive.util.MongoSubscriberSync
 import org.bson.Document
 import org.bson.conversions.Bson
+import org.springframework.aot.hint.annotation.Reflective
 import org.springframework.core.io.ClassPathResource
 import java.io.IOException
 import java.lang.System.Logger.Level.INFO
@@ -27,6 +28,7 @@ import java.util.ResourceBundle
  * Change Unit for the product entity. Follows the format `yyyyMMddHHmm{action}{name}CollectionChnageUnit`
  * @author Julius Krah
  */
+@Reflective
 @ChangeUnit(id = "create-product-collection-202401151530", order = "202401151530", author = "Julius Krah")
 class `202401151530CreateProductCollectionChangeUnit`(
     private val database: MongoDatabase,

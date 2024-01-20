@@ -4,5 +4,7 @@ mutation addProduct($title: String!, $description: String, $mediaUrl: [URL]) {
         title
         description
         mediaUrl
+        createdAt
+        updatedAt
     }
 }

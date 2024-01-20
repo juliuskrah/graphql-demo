@@ -14,7 +14,7 @@ import org.springframework.util.ClassUtils
  * @author Julius Krah
  */
 @EnabledIfRuntimeHintsAgent
-class ReflectiveRuntimeHintsTest {
+class ReflectiveRuntimeHintsRegistrarTest {
 
     @Test
     fun `should provide hints for reflective types`() {
