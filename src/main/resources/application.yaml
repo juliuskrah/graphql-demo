@@ -17,6 +17,5 @@ spring:
 
 mongock:
   enabled: true
-#  migration-scan-package: com.example.graph.migration
   runner-type: applicationrunner
   transaction-enabled: true

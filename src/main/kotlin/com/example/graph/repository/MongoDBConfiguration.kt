@@ -1,24 +1,21 @@
 package com.example.graph.repository
 
-import com.example.graph.migration.`202401151530CreateProductCollectionChangeUnit`
+import com.example.graph.spring.EnableMongockChangeUnit
 import com.mongodb.reactivestreams.client.MongoClient
-import io.mongock.api.config.MongockConfiguration
-import io.mongock.driver.api.driver.ConnectionDriver
+import io.mongock.api.annotations.ChangeUnit
 import io.mongock.driver.mongodb.reactive.driver.MongoReactiveDriver
-import io.mongock.runner.core.executor.system.changes.SystemChangeUnit00001
-import io.mongock.runner.springboot.MongockSpringboot
 import io.mongock.runner.springboot.RunnerSpringbootBuilder
-import io.mongock.runner.springboot.base.config.MongockContextBase
-import io.mongock.runner.springboot.base.config.MongockSpringConfiguration
+import io.mongock.runner.springboot.base.MongockApplicationRunner
+import io.mongock.runner.springboot.base.MongockInitializingBeanRunner
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationEventPublisher
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan.Filter
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.FilterType
 import org.springframework.data.domain.ReactiveAuditorAware
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing
+import org.springframework.data.mongodb.core.mapping.Document
 import reactor.core.publisher.Mono
 import io.mongock.api.config.MongockConfiguration as MongockConfig
 
@@ -26,10 +23,12 @@ import io.mongock.api.config.MongockConfiguration as MongockConfig
  * @author Julius Krah
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(value = ["\${mongock.enabled}"], havingValue = "true", matchIfMissing = true)
-@EnableConfigurationProperties(value = [MongockSpringConfiguration::class])
+@EnableMongockChangeUnit(basePackages = ["com.example.graph"],
+    includeFilters = [Filter(type = FilterType.ANNOTATION, classes = [ChangeUnit::class])],
+    excludeFilters = [Filter(Document::class)]
+)
 @EnableReactiveMongoAuditing(auditorAwareRef = "auditor")
-class MongoDBConfiguration: MongockContextBase<MongockConfiguration>() {
+class MongoDBConfiguration {
 
     @Bean
     fun connectionDriver(
@@ -45,24 +44,22 @@ class MongoDBConfiguration: MongockContextBase<MongockConfiguration>() {
     }
 
     @Bean
+    @ConditionalOnExpression("'\${mongock.runner-type:ApplicationRunner}'.toLowerCase().equals('applicationrunner')")
+    fun applicationRunner(mongockRunner: RunnerSpringbootBuilder): MongockApplicationRunner {
+        return mongockRunner.buildApplicationRunner()
+    }
+
+    @Bean
+    @ConditionalOnExpression("'\${mongock.runner-type:null}'.toLowerCase().equals('initializingbean')")
+    fun initializingBeanRunner(mongockRunner: RunnerSpringbootBuilder): MongockInitializingBeanRunner {
+        return mongockRunner.buildInitializingBeanRunner()
+    }
+
+    @Bean
     fun auditor(): ReactiveAuditorAware<String> {
         return ReactiveAuditorAware {
             Mono.just("system-job")
         }
     }
 
-    override fun getBuilder(
-        connectionDriver: ConnectionDriver,
-        springConfiguration: MongockConfiguration,
-        springContext: ApplicationContext,
-        applicationEventPublisher: ApplicationEventPublisher,
-    ): RunnerSpringbootBuilder {
-        return MongockSpringboot.builder()
-            .setDriver(connectionDriver)
-            .setConfig(springConfiguration)
-            .setSpringContext(springContext)
-            .setEventPublisher(applicationEventPublisher)
-            .addMigrationClass(SystemChangeUnit00001::class.java)
-            .addMigrationClass(`202401151530CreateProductCollectionChangeUnit`::class.java)
-    }
 }

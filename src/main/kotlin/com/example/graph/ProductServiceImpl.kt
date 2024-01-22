@@ -39,8 +39,8 @@ class ProductServiceImpl(private val productRepository: Products) : ProductServi
     override fun products(count: Int, scroll: ScrollPosition): Mono<Window<Product>> {
         return this.productRepository.findBy(Example.of(ProductEntity())) { query ->
             query.sortBy(Sort.by(desc("id"), desc("updatedAt")))
-                .limit(count).`as`(Product::class.java).scroll(scroll)
-        }
+                .limit(count).scroll(scroll)
+        }.map { window -> window.map { entity -> entity.toProduct() } }
     }
 
     override fun node(id: String): Mono<Product> = product(id)

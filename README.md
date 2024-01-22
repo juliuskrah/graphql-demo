@@ -172,6 +172,11 @@ TODO
 
 - [ ] File upload
 - [ ] Authentication
-- [ ] Paging with keyset
+- [x] Migration
+  - [x] aot processing
+- [ ] Queries
+  - [ ] sorting
+  - [ ] filters
+- [x] Paging with keyset
 - [x] Fix tests
 - [x] Database migration

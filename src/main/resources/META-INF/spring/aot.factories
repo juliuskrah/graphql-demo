@@ -1,3 +1,5 @@
 org.springframework.aot.hint.RuntimeHintsRegistrar=\
   com.example.graph.nativex.ResourceBundleRuntimeHintsRegistrar,\
   com.example.graph.nativex.ReflectiveRuntimeHintsRegistrar
+org.springframework.beans.factory.aot.BeanFactoryInitializationAotProcessor=\
+  com.example.graph.nativex.ChangeUnitBeanFactoryInitializationAotProcessor

@@ -5,6 +5,8 @@ query nodeById($nodeId: ID!) {
             title
             description
             mediaUrl
+            updatedAt
+            createdAt
         }
     }
 }
