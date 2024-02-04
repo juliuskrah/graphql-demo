@@ -7,6 +7,7 @@ type Query {
 
 type Mutation {
   addProduct(input: ProductInput!): Product
+  login(username: String!, password: String!): AccessToken
 }
 
 interface Node {
@@ -14,7 +15,7 @@ interface Node {
   id: ID!
 }
 
-type Product implements Node{
+type Product implements Node {
   id: ID!
   title: String!
   createdAt: DateTime!
@@ -22,6 +23,14 @@ type Product implements Node{
   description: String
   mediaUrl: [URL]
   # Do not expose createdBy and updatedBy
+}
+
+type AccessToken {
+  access_token: String!
+  token_type: String!
+  expires_in: Int!
+  refresh_token: String!
+  scope: String
 }
 
 input ProductInput {

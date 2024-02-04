@@ -24,6 +24,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.graphql.data.method.annotation.SchemaMapping
 import org.springframework.graphql.data.query.ScrollSubrange
 import org.springframework.graphql.execution.ErrorType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import java.lang.System.Logger.Level.INFO
 
@@ -31,6 +32,7 @@ import java.lang.System.Logger.Level.INFO
  * @author Julius Krah
  */
 @Controller
+@PreAuthorize("isAuthenticated()")
 class NodeController (
     private val nodeResolver: NodeResolver,
     private val nodeService: ProductService
@@ -56,7 +58,7 @@ class NodeController (
     }
 
     @SchemaMapping
-    fun id(product: Product) = GlobalId(DgsConstants.PRODUCT.TYPE_NAME, product.id).toBase64()
+    suspend fun id(product: Product) = GlobalId(DgsConstants.PRODUCT.TYPE_NAME, product.id).toBase64()
 
     @QueryMapping
     suspend fun product(@Argument id: String): Product? {

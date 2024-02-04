@@ -13,8 +13,17 @@ interface Node {
     id: ID!
 }
 
+type AccessToken {
+    access_token: String!
+    expires_in: Int!
+    refresh_token: String!
+    scope: String
+    token_type: String!
+}
+
 type Mutation {
     addProduct(input: ProductInput!): Product
+    login(password: String!, username: String!): AccessToken
 }
 
 type PageInfo {
@@ -25,12 +34,12 @@ type PageInfo {
 }
 
 type Product implements Node {
-    createdAt: DateTime
+    createdAt: DateTime!
     description: String
     id: ID!
     mediaUrl: [URL]
     title: String!
-    updatedAt: DateTime
+    updatedAt: DateTime!
 }
 
 type ProductConnection {

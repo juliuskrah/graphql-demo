@@ -25,6 +25,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-graphql")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.graphql-java:graphql-java-extended-scalars:19.0")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")

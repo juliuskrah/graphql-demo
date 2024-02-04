@@ -108,7 +108,27 @@ You need Java 21 to run this demo:
 ./gradlew bootRun
 ```
 
-Endpoint: http://localhost:8080
+Endpoint: http://localhost:8080/graphql
+
+Login and grab `access_toke`:
+
+```graphql
+mutation userLogin($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+        access_token
+        expires_in
+    }
+}
+```
+
+Users:
+
+| Username | Password | Roles         |
+|----------|----------|---------------|
+| user     | password | product:read  |
+| admin    | password | product:write |
+
+Use the access token in the response for subsequent requests. Add a header in the form `Authorization: Bearer <token>`
 
 Create a Product:
 
@@ -171,12 +191,12 @@ docker compose -f src/main/resources/compose.yml -f src/main/resources/compose.d
 TODO
 
 - [ ] File upload
-- [ ] Authentication
-- [x] Migration
-  - [x] aot processing
 - [ ] Queries
   - [ ] sorting
   - [ ] filters
+- [x] Migration
+  - [ ] aot processing
+- [x] Authentication
 - [x] Paging with keyset
 - [x] Fix tests
 - [x] Database migration

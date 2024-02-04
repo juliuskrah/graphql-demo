@@ -4,6 +4,8 @@ query products($first: Int, $after: String, $last: Int, $before: String) {
             node {
                 id
                 title
+                createdAt
+                updatedAt
                 description
                 mediaUrl
             }

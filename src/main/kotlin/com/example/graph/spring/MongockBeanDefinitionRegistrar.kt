@@ -52,7 +52,7 @@ class MongockBeanDefinitionRegistrar(
             ClassUtils.forName(it.beanClassName!!, resourceLoader.classLoader)
         }
 
-        val beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(
+        val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(
             RunnerSpringbootBuilder::class.java,
             mongockRunnerBuilderInstanceSupplier(changeUnitSets)
         ).beanDefinition
