@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.graphql.ResponseError
 import org.springframework.graphql.execution.ErrorType
 import org.springframework.graphql.test.tester.HttpGraphQlTester
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 import java.time.OffsetDateTime
@@ -38,6 +39,7 @@ import java.util.Locale
         "spring.main.allow-bean-definition-overriding=true"
     ]
 )
+@WithMockUser
 class NodeControllerTest {
 
     @Test

@@ -27,3 +27,4 @@ mongock:
   enabled: true
   runner-type: applicationrunner
   transaction-enabled: true
+  migration-scan-package: com.example.graph.migration

@@ -7,8 +7,11 @@ import io.mongock.driver.mongodb.reactive.driver.MongoReactiveDriver
 import io.mongock.runner.springboot.RunnerSpringbootBuilder
 import io.mongock.runner.springboot.base.MongockApplicationRunner
 import io.mongock.runner.springboot.base.MongockInitializingBeanRunner
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan.Filter
 import org.springframework.context.annotation.Configuration
@@ -29,6 +32,10 @@ import io.mongock.api.config.MongockConfiguration as MongockConfig
 )
 @EnableReactiveMongoAuditing(auditorAwareRef = "auditor")
 class MongoDBConfiguration {
+    @Autowired
+    lateinit var applicationContext: ApplicationContext
+    @Autowired
+    lateinit var applicationEventPublisher: ApplicationEventPublisher
 
     @Bean
     fun connectionDriver(
@@ -46,12 +53,14 @@ class MongoDBConfiguration {
     @Bean
     @ConditionalOnExpression("'\${mongock.runner-type:ApplicationRunner}'.toLowerCase().equals('applicationrunner')")
     fun applicationRunner(mongockRunner: RunnerSpringbootBuilder): MongockApplicationRunner {
+        mongockRunner.setSpringContext(applicationContext).setEventPublisher(applicationEventPublisher)
         return mongockRunner.buildApplicationRunner()
     }
 
     @Bean
     @ConditionalOnExpression("'\${mongock.runner-type:null}'.toLowerCase().equals('initializingbean')")
     fun initializingBeanRunner(mongockRunner: RunnerSpringbootBuilder): MongockInitializingBeanRunner {
+        mongockRunner.setSpringContext(applicationContext).setEventPublisher(applicationEventPublisher)
         return mongockRunner.buildInitializingBeanRunner()
     }
 

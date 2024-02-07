@@ -1,9 +1,11 @@
 package com.example.graph.nativex
 
 import io.mongock.api.annotations.ChangeUnit
+import io.mongock.runner.springboot.MongockSpringboot
 import org.springframework.aot.hint.MemberCategory.INVOKE_DECLARED_CONSTRUCTORS
 import org.springframework.aot.hint.MemberCategory.INVOKE_DECLARED_METHODS
 import org.springframework.aot.hint.ReflectionHints
+import org.springframework.aot.hint.registerType
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotProcessor
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
@@ -48,6 +50,9 @@ class ChangeUnitBeanFactoryInitializationAotProcessor: BeanFactoryInitialization
             hints.registerType(it) { hint ->
                 hint.withMembers(INVOKE_DECLARED_METHODS, INVOKE_DECLARED_CONSTRUCTORS)
             }
+        }
+        hints.registerType<MongockSpringboot.RunnerSpringbootBuilderImpl> {hint ->
+            hint.withMembers(INVOKE_DECLARED_METHODS, INVOKE_DECLARED_CONSTRUCTORS)
         }
     }
 }

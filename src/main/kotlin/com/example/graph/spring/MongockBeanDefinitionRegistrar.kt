@@ -1,16 +1,13 @@
 package com.example.graph.spring
 
-import io.mongock.api.config.MongockConfiguration
-import io.mongock.driver.api.driver.ConnectionDriver
 import io.mongock.runner.springboot.MongockSpringboot
 import io.mongock.runner.springboot.RunnerSpringbootBuilder
 import org.springframework.beans.factory.aot.BeanInstanceSupplier
 import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.beans.factory.getBean
 import org.springframework.beans.factory.support.BeanDefinitionBuilder
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.BeanNameGenerator
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
 import org.springframework.context.annotation.ConfigurationClassPostProcessor
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
@@ -51,12 +48,14 @@ class MongockBeanDefinitionRegistrar(
         val changeUnitSets = scanner(packages, includeFilters, excludeFilters).map {
             ClassUtils.forName(it.beanClassName!!, resourceLoader.classLoader)
         }
-
-        val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(
-            RunnerSpringbootBuilder::class.java,
-            mongockRunnerBuilderInstanceSupplier(changeUnitSets)
-        ).beanDefinition
-        registry.registerBeanDefinition(getName(RunnerSpringbootBuilder::class.java), beanDefinition)
+        val builder = BeanDefinitionBuilder
+            .rootBeanDefinition(MongockSpringboot::class.java, "builder")
+            .addPropertyReference("driver", "connectionDriver")
+            .addPropertyReference("config", "mongock-io.mongock.runner.springboot.base.config.MongockSpringConfiguration")
+//        changeUnitSets.forEach{
+//            builder.addPropertyValue("addMigrationClass", it)
+//        }
+        registry.registerBeanDefinition(getName(RunnerSpringbootBuilder::class.java), builder.beanDefinition)
     }
 
     private fun getBasePackages(attributes: AnnotationAttributes, metadata: AnnotationMetadata): Stream<String> {
@@ -101,31 +100,15 @@ class MongockBeanDefinitionRegistrar(
         return parseFilters("excludeFilters", attributes, registry)
     }
 
-    private fun createBuilder(
-        connectionDriver: ConnectionDriver,
-        springConfiguration: MongockConfiguration,
-        springContext: ApplicationContext,
-        applicationEventPublisher: ApplicationEventPublisher,
-    ): RunnerSpringbootBuilder {
-        return MongockSpringboot.builder()
-            .setDriver(connectionDriver)
-            .setConfig(springConfiguration)
-            .setSpringContext(springContext)
-            .setEventPublisher(applicationEventPublisher)
-    }
-
     private fun mongockRunnerBuilderInstanceSupplier(classes: Stream<Class<*>>): BeanInstanceSupplier<RunnerSpringbootBuilder> {
         return BeanInstanceSupplier.forFactoryMethod<RunnerSpringbootBuilder>(
-            MongockBeanDefinitionRegistrar::class.java,
-            "createBuilder",
-            ConnectionDriver::class.java,
-            MongockConfiguration::class.java,
-            ApplicationContext::class.java,
-            ApplicationEventPublisher::class.java
-        ).withGenerator {_, args ->
-            val builder = createBuilder(args.get<ConnectionDriver>(0)!!, args.get<MongockConfiguration>(1)!!,
-                args.get<ApplicationContext>(2)!!, args.get<ApplicationEventPublisher>(3)!!
-            )
+            MongockSpringboot::class.java,
+            "builder"
+        ).withGenerator { bean ->
+            val builder = MongockSpringboot.builder()
+            val beanFactory = bean.beanFactory
+            builder.setDriver(beanFactory.getBean())
+                .setConfig(beanFactory.getBean())
             classes.forEach(builder::addMigrationClass)
             builder
         }
