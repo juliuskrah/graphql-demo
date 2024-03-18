@@ -30,12 +30,12 @@ import java.util.ResourceBundle
  */
 @Reflective
 @ChangeUnit(id = "create-product-collection-202401151530", order = "202401151530", author = "Julius Krah")
-class `202401151530CreateProductCollectionChangeUnit`(
+class CreateProductCollectionChangeUnit202401151530(
     private val database: MongoDatabase,
     private val session: ClientSession,
     private val jackson: ObjectMapper
 ) {
-    private val log: System.Logger = System.getLogger(`202401151530CreateProductCollectionChangeUnit`::class.simpleName, ResourceBundle.getBundle("messages.messages"))
+    private val log: System.Logger = System.getLogger(CreateProductCollectionChangeUnit202401151530::class.simpleName, ResourceBundle.getBundle("messages.messages"))
 
     companion object {
         @JvmStatic

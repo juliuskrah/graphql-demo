@@ -50,14 +50,12 @@ class MongoDBConfiguration {
         return driver
     }
 
-    @Bean
     @ConditionalOnExpression("'\${mongock.runner-type:ApplicationRunner}'.toLowerCase().equals('applicationrunner')")
     fun applicationRunner(mongockRunner: RunnerSpringbootBuilder): MongockApplicationRunner {
         mongockRunner.setSpringContext(applicationContext).setEventPublisher(applicationEventPublisher)
         return mongockRunner.buildApplicationRunner()
     }
 
-    @Bean
     @ConditionalOnExpression("'\${mongock.runner-type:null}'.toLowerCase().equals('initializingbean')")
     fun initializingBeanRunner(mongockRunner: RunnerSpringbootBuilder): MongockInitializingBeanRunner {
         mongockRunner.setSpringContext(applicationContext).setEventPublisher(applicationEventPublisher)

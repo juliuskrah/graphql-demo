@@ -49,7 +49,7 @@ scalar DateTime
 
 ## Using Global ID
 
-The Global Identifier for `Node` types are represented as `gid://demo/{node}/{id}` when decoded from base64.
+The Global Identifier for `Node` types are represented as `gid://demo/{node}/{id}` base64 decoded.
 
 Given a Global ID of
 
@@ -110,7 +110,7 @@ You need Java 21 to run this demo:
 
 Endpoint: http://localhost:8080/graphql
 
-Login and grab `access_toke`:
+Login (using the users below) and grab an `access_token`:
 
 ```graphql
 mutation userLogin($username: String!, $password: String!) {
@@ -162,6 +162,8 @@ query productById($productId: ID!) {
 }
 ```
 
+> :information_source: You can find more examples in the [`src/main/resources/graphql`](src/main/resources/graphql) directory.
+
 ### Building a native binary
 
 You need a [Native Image Kit](https://bell-sw.com/pages/downloads/native-image-kit/#/nik-22-17) v22.3 and above.
@@ -170,22 +172,25 @@ You need a [Native Image Kit](https://bell-sw.com/pages/downloads/native-image-k
 ./gradlew nativeCompile
 ```
 
+Set up the following environment variables:
+
+```bash
+export SPRING_DATA_MONGODB_DATABASE=test
+export SPRING_DATA_MONGODB_USERNAME=testuser
+export SPRING_DATA_MONGODB_PASSWORD=testpassword
+export SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
+```
+
+Start the database:
+
+```bash
+docker compose -f src/main/resources/compose.yml -f src/main/resources/compose.dev.yml up -d
+````
+
 The native image executable can be found the `build/native/nativeCompile`
 
 ```bash
 ./build/native/nativeCompile/graphql-demo
-```
-
-
-## Docker Compose
-
-Ignore this step if you just want to try out the demo via the graphQl API (the docker compose services are started
-automatically with Spring Boot).
-
-Start the docker compose services when you want to play with the database:
-
-```bash
-docker compose -f src/main/resources/compose.yml -f src/main/resources/compose.dev.yml up -d
 ```
 
 TODO
@@ -197,6 +202,7 @@ TODO
 - [x] Migration
   - [ ] aot processing
 - [x] Authentication
+  - [ ] Authorization
 - [x] Paging with keyset
 - [x] Fix tests
 - [x] Database migration
