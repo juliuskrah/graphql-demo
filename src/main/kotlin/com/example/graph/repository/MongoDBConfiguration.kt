@@ -3,6 +3,7 @@ package com.example.graph.repository
 import com.example.graph.spring.EnableMongockChangeUnit
 import com.mongodb.reactivestreams.client.MongoClient
 import io.mongock.api.annotations.ChangeUnit
+import io.mongock.api.config.MongockConfiguration
 import io.mongock.driver.mongodb.reactive.driver.MongoReactiveDriver
 import io.mongock.runner.core.executor.MongockRunner
 import io.mongock.runner.springboot.base.MongockApplicationRunner
@@ -17,7 +18,6 @@ import org.springframework.data.domain.ReactiveAuditorAware
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing
 import org.springframework.data.mongodb.core.mapping.Document
 import reactor.core.publisher.Mono
-import io.mongock.api.config.MongockConfiguration as MongockConfig
 
 /**
  * @author Julius Krah
@@ -33,7 +33,7 @@ class MongoDBConfiguration {
     @Bean
     fun connectionDriver(
         @Value("\${spring.data.mongodb.database}") database: String,
-        config: MongockConfig, client: MongoClient,
+        config: MongockConfiguration, client: MongoClient,
     ): MongoReactiveDriver {
         val driver = MongoReactiveDriver.withLockStrategy(client, database,
             config.lockAcquiredForMillis,

@@ -20,7 +20,6 @@ import org.bson.conversions.Bson
 import org.springframework.aot.hint.annotation.Reflective
 import org.springframework.core.io.ClassPathResource
 import java.io.IOException
-import java.lang.System.Logger.Level.INFO
 import java.time.Instant
 import java.util.ResourceBundle
 
@@ -30,12 +29,12 @@ import java.util.ResourceBundle
  */
 @Reflective
 @ChangeUnit(id = "create-product-collection-202401151530", order = "202401151530", author = "Julius Krah")
-class CreateProductCollectionChangeUnit202401151530(
+class `202401151530CreateProductCollectionChangeUnit`(
     private val database: MongoDatabase,
     private val session: ClientSession,
     private val jackson: ObjectMapper
 ) {
-    private val log: System.Logger = System.getLogger(CreateProductCollectionChangeUnit202401151530::class.simpleName, ResourceBundle.getBundle("messages.messages"))
+    private val log: System.Logger = System.getLogger(`202401151530CreateProductCollectionChangeUnit`::class.simpleName, ResourceBundle.getBundle("messages.messages"))
 
     companion object {
         @JvmStatic
@@ -116,7 +115,7 @@ class CreateProductCollectionChangeUnit202401151530(
     @Execution
     fun addDataProductCollection() {
         val jsonProducts = readFile("data/products.json")
-        log.log(INFO, "log.migration.json.data", jsonProducts)
+        log.log(System.Logger.Level.INFO, "log.migration.json.data", jsonProducts)
         val products = jsonProducts.map{
             it["createdAt"] = Instant.ofEpochSecond((it["createdAt"] as Int).toLong())
             it["updatedAt"] = Instant.ofEpochSecond((it["updatedAt"] as Int).toLong())
