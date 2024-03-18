@@ -199,10 +199,10 @@ TODO
 - [ ] Queries
   - [ ] sorting
   - [ ] filters
-- [x] Migration
-  - [ ] aot processing
 - [x] Authentication
   - [ ] Authorization
+- [x] Migration
+  - [x] aot processing
 - [x] Paging with keyset
 - [x] Fix tests
 - [x] Database migration
