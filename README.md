@@ -181,6 +181,12 @@ export SPRING_DATA_MONGODB_PASSWORD=testpassword
 export SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
 ```
 
+Set permissions on the `keyfile`:
+
+```bash
+chmod 400 src/main/resources/docker/keyfile
+```
+
 Start the database:
 
 ```bash

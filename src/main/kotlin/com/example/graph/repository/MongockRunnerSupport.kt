@@ -11,7 +11,11 @@ import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.ApplicationEventPublisherAware
 
 /**
+ * It is difficult using java bean properties when creating a BeanDefintion using MongockRunnerBuilder.
+ * This support class enables creating a [org.springframework.beans.factory.config.BeanDefinition] programmatically for the MongockRunnerBuilder.
  * @author Julius Krah
+ * @see MongockRunner
+ * @see RunnerSpringbootBuilder
  */
 class MongockRunnerSupport: ApplicationContextAware, ApplicationEventPublisherAware {
     var driver: ConnectionDriver? = null
